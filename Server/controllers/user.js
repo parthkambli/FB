@@ -1,6 +1,12 @@
 import bcrypt from "bcrypt";
 import validator from "validator";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+
+// Create token
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
+};
 
 // -----------------------------------------------------------------------------------------------
 // @desc - signup user
@@ -10,6 +16,12 @@ export const signupUser = async (req, res) => {
   const { Full_Name, User_Name, Email, Password, Confirm_Password } = req.body;
 
   try {
+    if (!Full_Name) {
+      throw Error("name can not be empty!");
+    }
+    if (!User_Name) {
+      throw Error("User name can not be empty!");
+    }
     if (!Email) {
       throw Error("email can not be empty!");
     }
@@ -46,7 +58,9 @@ export const signupUser = async (req, res) => {
       Password: hash,
     });
 
-    return res.status(200).json({ success: true, data: user });
+    const token = createToken(user._id);
+
+    return res.status(200).json({ success: true, data: user, token: token });
   } catch (error) {
     if (error.name === "ValidationError") {
       return res.status(400).json({
@@ -92,7 +106,9 @@ export const loginUser = async (req, res) => {
       throw Error("Incorrect credential!");
     }
 
-    return res.status(200).json({ success: true, data: user });
+    const token = createToken(user._id); // create token
+
+    return res.status(200).json({ success: true, data: user, token: token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
