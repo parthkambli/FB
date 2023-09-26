@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  font-family: "Source Sans 3", sans-serif;
+  background-image: url("./assets/BG.png");
+  background-repeat: repeat;
+  background-position: left;
+}
+
+h1,
+h2 {
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 700;
+}
+
+h3,
+h4 {
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 600;
+}
+
+h5,
+h6 {
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 500;
+}
