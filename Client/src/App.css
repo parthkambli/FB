@@ -1,0 +1,43 @@
+.nav.nav-tabs {
+  border-top: 2px solid #fc7300;
+  border-bottom: 0px;
+}
+
+.nav-item.active {
+  background-color: #fc7300;
+}
+
+.nav-link.active {
+  background-color: #fc7300 !important;
+  color: white !important;
+}
+
+.nav-link {
+  color: #fc7300 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.button {
+  color: #f1f1f1;
+  background-color: #fc7300;
+}
+
+.button:hover {
+  color: #ffffff;
+  background-color: #dc6300;
+}
+
+.slide-in {
+  animation: slideInAnimation 0.5s forwards;
+}
+
+@keyframes slideInAnimation {
+  from {
+    transform: translateY(-20%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
