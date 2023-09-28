@@ -1,10 +1,14 @@
 import Logo from "../assets/Logo2.png";
 import backgroundImage from "../assets/LandingBG.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/Auth/AuthContext";
 
 const Landing = () => {
+  const { SignUp, LogIn, error, resetError } = useContext(AuthContext);
+
   const [navbarHeight, setNavbarHeight] = useState(0);
   const [formShow, setFormShow] = useState("login");
+  const [showAlert, setShowAlert] = useState(false);
 
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
@@ -19,7 +23,49 @@ const Landing = () => {
       setNavbarHeight(navbar.offsetHeight);
     }
   }, []);
-  
+
+  const UserSignUp = async (e) => {
+    e.preventDefault();
+
+    const user = {
+      Full_Name: fullName,
+      User_Name: userName,
+      Email: email,
+      Password: password,
+      Confirm_Password: confirmPassword,
+    };
+
+    await SignUp(user);
+    setFullName("");
+    setUserName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+      resetError();
+    }, 3000);
+  };
+
+  const UserLogIn = async (e) => {
+    e.preventDefault();
+
+    const Logonuser = {
+      Email: email,
+      Password: password,
+    };
+
+    await LogIn(Logonuser);
+    setEmail("");
+    setPassword("");
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+      resetError();
+    }, 3000);
+  };
+
   return (
     <div
       className="d-flex flex-column justify-content-center py-5 py-md-2 m-0"
@@ -79,7 +125,7 @@ const Landing = () => {
                 </span>
               </div>
               {formShow === "login" ? (
-                <form className="p-4">
+                <form className="p-4" onSubmit={UserLogIn}>
                   <div className="mb-3">
                     <input
                       type="email"
@@ -100,13 +146,17 @@ const Landing = () => {
                       value={password}
                     />
                   </div>
-
+                  {error && showAlert && (
+                    <div className="alert alert-danger" role="alert">
+                      {error}
+                    </div>
+                  )}
                   <button type="submit" className="btn button w-100">
                     Login
                   </button>
                 </form>
               ) : (
-                <form className="p-4">
+                <form className="p-4" onSubmit={UserSignUp}>
                   <div className="mb-3">
                     <input
                       type="text"
@@ -157,7 +207,11 @@ const Landing = () => {
                       value={confirmPassword}
                     />
                   </div>
-
+                  {error && showAlert && (
+                    <div className="alert alert-danger" role="alert">
+                      {error}
+                    </div>
+                  )}
                   <button type="submit" className="btn button w-100">
                     Signup
                   </button>

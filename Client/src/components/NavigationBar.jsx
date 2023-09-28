@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import ProfilePicture from "../assets/ProfilePicture.jpg";
+import { AuthContext } from "../context/Auth/AuthContext";
 
 const Navbar = () => {
+  const { LogOut } = useContext(AuthContext);
+
   const [showSearch, setShowSearch] = useState(false);
+
+  const UserLogOut = async (e) => {
+    e.preventDefault();
+    await LogOut();
+  };
 
   return (
     <div className="sticky-top">
@@ -78,7 +86,7 @@ const Navbar = () => {
               />
             </Link>
             <Link to="/">
-              <FiLogOut size={30} className="text-white" />
+              <FiLogOut size={30} className="text-white" onClick={UserLogOut} />
             </Link>
           </div>
         </div>
