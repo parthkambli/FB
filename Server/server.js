@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./config/db.js";
 
 //Import Routes
@@ -13,6 +14,12 @@ connectDB();
 const app = express();
 
 // Middlewares
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 app.use(express.json());
 
 // Routes
