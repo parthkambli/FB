@@ -5,7 +5,7 @@ import connectDB from "./config/db.js";
 
 //Import Routes
 import userRoute from "./routes/user.js";
-
+import recipesRoute from "./routes/recipes.js";
 dotenv.config({ path: "./config/config.env" });
 
 connectDB();
@@ -24,6 +24,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/user", userRoute);
+app.use("/api/recipes", recipesRoute);
 
 const Port = process.env.PORT;
 
