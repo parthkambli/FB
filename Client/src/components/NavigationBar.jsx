@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Logo from "../assets/Logo.png";
-import ProfilePicture from "../assets/ProfilePicture.jpg";
+
 import { AuthContext } from "../context/Auth/AuthContext";
+
+import Logo from "../assets/Logo.png";
+import ProfilePicture from "../assets/Profile.png";
 
 const Navbar = () => {
   const { LogOut, user } = useContext(AuthContext);
@@ -26,7 +28,7 @@ const Navbar = () => {
         <div className="container">
           <Link
             className="navbar-brand"
-            to="/home"
+            to="/"
             style={{
               fontFamily: "Fredoka One",
               fontSize: "25px",

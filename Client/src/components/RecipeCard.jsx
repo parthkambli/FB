@@ -1,5 +1,5 @@
 import RecipeImg from "../assets/ChocoLavaCake.jpg";
-import ProfilePicture from "../assets/SanjeevKapoor.jpg";
+import ProfilePicture from "../assets/Profile.png";
 import { Link } from "react-router-dom";
 
 import { FaRegHeart, FaRegBookmark, FaShare, FaHeart } from "react-icons/fa";
