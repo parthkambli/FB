@@ -9,6 +9,7 @@ import NavigationBar from "./components/NavigationBar";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
+import RecipeDetail from "./pages/RecipeDetail";
 
 const App = () => {
   const { user } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const App = () => {
               path="/landing"
               element={!user ? <Landing /> : <Navigate to="/" />}
             />
+            <Route path="/RecipeDetail" element={<RecipeDetail />} />
             <Route path="/Profile" element={<Profile />} />
           </Routes>
         </BrowserRouter>
