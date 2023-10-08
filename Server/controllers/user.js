@@ -109,6 +109,30 @@ export const loginUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+// -----------------------------------------------------------------------------------------------
+// @desc - get user
+// @route - PUT /api/users/edit
+// -----------------------------------------------------------------------------------------------
+export const getUser = async (req, res) => {
+  try {
+    // Get the authenticated user's ID from the token
+    const userId = req.user._id;
+
+    // Query the database to find the user by their ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // If the user is found, return their information
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
 // -----------------------------------------------------------------------------------------------
 // @desc - edit user
 // @route - PUT /api/users/edit
