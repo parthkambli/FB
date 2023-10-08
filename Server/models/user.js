@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
   Confirm_Password: {
     type: String,
   },
+  Profile_Picture: {
+    type: String,
+  },
+  Bio: {
+    type: String,
+  },
 });
 
 export default mongoose.model("User", userSchema);

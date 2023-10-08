@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
@@ -62,12 +63,7 @@ export const signupUser = async (req, res) => {
 
     return res.status(200).json({ success: true, data: user, token: token });
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.status(400).json({
-        success: false,
-        error: Object.values(error.errors).map((val) => val.message),
-      });
-    } else if (error.code === 11000) {
+    if (error.code === 11000) {
       const fieldName = Object.keys(error.keyValue)[0];
       return res.status(400).json({
         success: false,
@@ -111,5 +107,51 @@ export const loginUser = async (req, res) => {
     return res.status(200).json({ success: true, data: user, token: token });
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+// -----------------------------------------------------------------------------------------------
+// @desc - edit user
+// @route - PUT /api/users/edit
+// -----------------------------------------------------------------------------------------------
+export const editUser = async (req, res) => {
+  const { Profile_Picture, Bio, Full_Name, User_Name } = req.body;
+
+  try {
+    // Get the authenticated user's ID from the token
+    const userId = req.user._id;
+
+    if (!Full_Name) {
+      throw Error("Name can not be empty!");
+    }
+    if (!User_Name) {
+      throw Error("User name can not be empty!");
+    }
+
+    // Create an object with the fields you want to update
+    const updatedUserFields = {
+      Profile_Picture,
+      Bio,
+      Full_Name,
+      User_Name,
+    };
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { ...updatedUserFields },
+      { new: true } // Return the updated user
+    );
+
+    // Check for existence of the user
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: user,
+      message: "Profile Edited Successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
   }
 };
