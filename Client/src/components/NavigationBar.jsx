@@ -7,7 +7,7 @@ import ProfilePicture from "../assets/ProfilePicture.jpg";
 import { AuthContext } from "../context/Auth/AuthContext";
 
 const Navbar = () => {
-  const { LogOut } = useContext(AuthContext);
+  const { LogOut, user } = useContext(AuthContext);
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -76,18 +76,26 @@ const Navbar = () => {
               <FaSearch />
             </button>
             {/* Profile Picture */}
-            <Link to="/Profile">
-              <img
-                src={ProfilePicture}
-                alt="Profile"
-                width="40"
-                height="40"
-                className="rounded-circle ms-auto m-2"
-              />
-            </Link>
-            <Link to="/">
-              <FiLogOut size={30} className="text-white" onClick={UserLogOut} />
-            </Link>
+            {user && (
+              <div>
+                <Link to="/Profile">
+                  <img
+                    src={ProfilePicture}
+                    alt="Profile"
+                    width="40"
+                    height="40"
+                    className="rounded-circle ms-auto m-2"
+                  />
+                </Link>
+                <Link to="/">
+                  <FiLogOut
+                    size={30}
+                    className="text-white"
+                    onClick={UserLogOut}
+                  />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
