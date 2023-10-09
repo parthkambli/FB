@@ -30,8 +30,14 @@ const App = () => {
                 path="/landing"
                 element={!user ? <Landing /> : <Navigate to="/" />}
               />
-              <Route path="/RecipeDetail" element={<RecipeDetail />} />
-              <Route path="/Profile" element={<Profile />} />
+              <Route
+                path="/RecipeDetail"
+                element={user ? <RecipeDetail /> : <Navigate to="/landing" />}
+              />
+              <Route
+                path="/Profile"
+                element={user ? <Profile /> : <Navigate to="/landing" />}
+              />
             </Routes>
           </BrowserRouter>
         </RecipeProvider>

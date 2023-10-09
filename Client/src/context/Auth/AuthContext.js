@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Login ----------------
   const LogIn = async (user) => {
     const config = {
       headers: {
@@ -78,6 +79,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Logout ---------------
   const LogOut = async () => {
     try {
       localStorage.removeItem("user");
