@@ -20,6 +20,18 @@ export default (state, action) => {
         loading: action.payload,
       };
 
+    case "SUCCESS":
+      return {
+        ...state,
+        success: action.payload,
+      };
+
+    case "RESET_SUCCESS":
+      return {
+        ...state,
+        success: action.payload,
+      };
+
     case "RESET_ERROR":
       return {
         ...state,

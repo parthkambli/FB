@@ -63,6 +63,13 @@ export const ProfileProvider = ({ children }) => {
       });
     }
   };
+  // Reset Success --------------------------------
+  async function resetSuccess() {
+    dispatch({
+      type: "RESET_SUCCESS",
+      payload: null,
+    });
+  }
 
   // Reset Error ----------------------------------
   async function resetError() {
@@ -76,10 +83,12 @@ export const ProfileProvider = ({ children }) => {
     <ProfileContext.Provider
       value={{
         user: state.user,
+        success: state.success,
         error: state.error,
         loading: state.loading,
         getProfile,
         editProfile,
+        resetSuccess,
         resetError,
       }}
     >
