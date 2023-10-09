@@ -1,19 +1,51 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProfilePicture from "../assets/Profile.png";
 import RecipeCard from "../components/RecipeCard";
-import { AuthContext } from "../context/Auth/AuthContext";
+// import { AuthContext } from "../context/Auth/AuthContext";
+import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, getProfile, editProfile, success, error, resetError } =
+    useContext(ProfileContext);
 
-  const [name, setName] = useState(user.Full_Name || "");
-  const [userName, setUserName] = useState(user.User_Name || "");
-  const [bio, setBio] = useState(user.Bio || "");
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [bio, setBio] = useState("");
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    resetError();
+    const editedProfile = {
+      Full_Name: name,
+      User_Name: userName,
+      Bio: bio,
+    };
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+      resetError();
+    }, 3000);
+    await editProfile(editedProfile);
+    console.log(success);
+  };
 
   return (
     <div className="container">
       <div className="p-2 my-2" style={{ backgroundColor: "#F1F1F1" }}>
+        {error && showAlert && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+          {/* Later place the error in modal */}
         <div className="row p-2">
           <div className="col-md-6">
             <div className="d-flex">
@@ -26,10 +58,18 @@ const Profile = () => {
               />
               <div className="p-3">
                 <h2 className="m-0" style={{ color: "#FC7300" }}>
-                  Sanjeev Kapoor
+                  {user.User_Name}
                 </h2>
-                <p>SanjeevKapoor@gail.com</p>
-                <p style={{ color: "#FC7300" }}>50 Recipes</p>
+                <div>
+                  <span className="pe-3">
+                    <strong>50</strong> Recipes
+                  </span>
+                  <span className="pe-3">
+                    <strong>50</strong> saved
+                  </span>
+                </div>
+                <h5 style={{ color: "#FC7300" }}>{user.Full_Name}</h5>
+                <p>{user.Bio}</p>
               </div>
             </div>
           </div>
@@ -38,9 +78,13 @@ const Profile = () => {
               <button
                 type="button"
                 className="btn btn-sm rounded-pill m-2"
-                onClick={console.log("user:-", user)}
                 data-bs-toggle="modal"
                 data-bs-target="#editProfile"
+                onClick={() => {
+                  setName(user.Full_Name);
+                  setUserName(user.User_Name);
+                  setBio(user.Bio);
+                }}
                 style={{ backgroundColor: "#FC7300", color: "#F1F1F1" }}
               >
                 Edit Profile
@@ -50,13 +94,19 @@ const Profile = () => {
                 className="modal fade"
                 id="editProfile"
                 tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
+                aria-labelledby="EditProfile"
                 aria-hidden="true"
               >
                 <div className="modal-dialog">
                   <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="exampleModalLabel">
+                    <div
+                      className="modal-header"
+                      style={{ backgroundColor: "#00425A" }}
+                    >
+                      <h1
+                        className="modal-title fs-5 text-white"
+                        id="EditProfile"
+                      >
                         Edit Profile
                       </h1>
                       <button
@@ -67,7 +117,7 @@ const Profile = () => {
                       ></button>
                     </div>
                     <div className="modal-body">
-                      <form className="p-4">
+                      <form className="p-4" onSubmit={onSubmit}>
                         <div className="mb-3 row">
                           <label
                             htmlFor="ProfilePicture"
@@ -131,23 +181,14 @@ const Profile = () => {
                             ></textarea>
                           </div>
                         </div>
+                        <button
+                          type="submit"
+                          className="btn button w-100"
+                          data-bs-dismiss="modal"
+                        >
+                          Edit
+                        </button>
                       </form>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        className="btn"
-                        style={{ backgroundColor: "#00425A", color: "#F1F1F1" }}
-                      >
-                        Edit
-                      </button>
                     </div>
                   </div>
                 </div>
