@@ -43,9 +43,11 @@ export const ProfileProvider = ({ children }) => {
 
   // Edit Profile ---------------------------------
   const editProfile = async (edits) => {
+    const token = localStorage.getItem("user");
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
