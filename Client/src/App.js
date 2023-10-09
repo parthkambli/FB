@@ -10,29 +10,32 @@ import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import RecipeDetail from "./pages/RecipeDetail";
+import { ProfileProvider } from "./context/Profile/ProfileContext";
 
 const App = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <AuthProvider>
-      <RecipeProvider>
-        <BrowserRouter>
-          <NavigationBar />
-          <Routes>
-            <Route
-              path="/"
-              element={user ? <Home /> : <Navigate to="/landing" />}
-            />
-            <Route
-              path="/landing"
-              element={!user ? <Landing /> : <Navigate to="/" />}
-            />
-            <Route path="/RecipeDetail" element={<RecipeDetail />} />
-            <Route path="/Profile" element={<Profile />} />
-          </Routes>
-        </BrowserRouter>
-      </RecipeProvider>
+      <ProfileProvider>
+        <RecipeProvider>
+          <BrowserRouter>
+            <NavigationBar />
+            <Routes>
+              <Route
+                path="/"
+                element={user ? <Home /> : <Navigate to="/landing" />}
+              />
+              <Route
+                path="/landing"
+                element={!user ? <Landing /> : <Navigate to="/" />}
+              />
+              <Route path="/RecipeDetail" element={<RecipeDetail />} />
+              <Route path="/Profile" element={<Profile />} />
+            </Routes>
+          </BrowserRouter>
+        </RecipeProvider>
+      </ProfileProvider>
     </AuthProvider>
   );
 };
