@@ -2,13 +2,15 @@
 import { useContext, useEffect, useState } from "react";
 import ProfilePicture from "../assets/Profile.png";
 import RecipeCard from "../components/RecipeCard";
+import { imageToBase64 } from "../utils/ImageUtils";
 // import { AuthContext } from "../context/Auth/AuthContext";
 import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Profile = () => {
-  const { user, getProfile, editProfile, success, error, resetError } =
+  const { user, getProfile, editProfile, error, resetError } =
     useContext(ProfileContext);
 
+  const [profilePicture, setProfilePicture] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
@@ -27,6 +29,7 @@ const Profile = () => {
       Full_Name: name,
       User_Name: userName,
       Bio: bio,
+      Profile_Picture: profilePicture,
     };
     setShowAlert(true);
     setTimeout(() => {
@@ -34,7 +37,12 @@ const Profile = () => {
       resetError();
     }, 3000);
     await editProfile(editedProfile);
-    console.log(success);
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await imageToBase64(file);
+    setProfilePicture(base64);
   };
 
   return (
@@ -45,12 +53,12 @@ const Profile = () => {
             {error}
           </div>
         )}
-          {/* Later place the error in modal */}
+        {/* Later place the error in modal */}
         <div className="row p-2">
           <div className="col-md-6">
             <div className="d-flex">
               <img
-                src={ProfilePicture}
+                src={user.Profile_Picture || ProfilePicture}
                 alt="Profile"
                 width="200"
                 height="200"
@@ -98,7 +106,10 @@ const Profile = () => {
                 aria-hidden="true"
               >
                 <div className="modal-dialog">
-                  <div className="modal-content">
+                  <div
+                    className="modal-content"
+                    style={{ backgroundColor: "#F1F1F1" }}
+                  >
                     <div
                       className="modal-header"
                       style={{ backgroundColor: "#00425A" }}
@@ -118,67 +129,67 @@ const Profile = () => {
                     </div>
                     <div className="modal-body">
                       <form className="p-4" onSubmit={onSubmit}>
-                        <div className="mb-3 row">
-                          <label
-                            htmlFor="ProfilePicture"
-                            className="col-3 col-form-label"
-                          >
-                            Profile Picture:-
-                          </label>
-                          <div className="col-9">
-                            <input
-                              type="file"
-                              className="form-control"
-                              id="ProfilePicture"
-                            />
+                        <div className="row">
+                          <div className="col-4">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="ProfilePicture"
+                                className="form-label text-center p-0 w-100 h-100 border border-0 custom-img-upload"
+                              >
+                                <img
+                                  className="rounded-circle"
+                                  src={user.Profile_Picture || ProfilePicture}
+                                  alt=""
+                                />
+                                <span>Edit Picture</span>
+                              </label>
+                              <input
+                                type="file"
+                                className="form-control"
+                                id="ProfilePicture"
+                                accept=".jpeg, .png, .jpg"
+                                // value={name}
+                                onChange={(e) => handleImageUpload(e)}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className="mb-3 row">
-                          <label
-                            htmlFor="Name"
-                            className="col-3 col-form-label"
-                          >
-                            Name:-
-                          </label>
-                          <div className="col-9">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="Name"
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        <div className="mb-3 row">
-                          <label
-                            htmlFor="UserName"
-                            className="col-3 col-form-label"
-                          >
-                            User Name: -
-                          </label>
-                          <div className="col-9">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="UserName"
-                              value={userName}
-                              onChange={(e) => setUserName(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        <div className="mb-3 row">
-                          <label htmlFor="Bio" className="col-3 col-form-label">
-                            Bio: -
-                          </label>
-                          <div className="col-9">
-                            <textarea
-                              className="form-control"
-                              id="Bio"
-                              rows="3"
-                              value={bio}
-                              onChange={(e) => setBio(e.target.value)}
-                            ></textarea>
+                          <div className="col-8">
+                            <div className="mb-3">
+                              <label htmlFor="Name" className="form-label">
+                                Name:-
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="UserName" className="form-label">
+                                User Name: -
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="UserName"
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="Bio" className="form-label">
+                                Bio: -
+                              </label>
+                              <textarea
+                                className="form-control"
+                                id="Bio"
+                                rows="3"
+                                value={bio}
+                                onChange={(e) => setBio(e.target.value)}
+                              ></textarea>
+                            </div>
                           </div>
                         </div>
                         <button
