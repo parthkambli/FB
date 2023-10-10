@@ -7,7 +7,7 @@ import { imageToBase64 } from "../utils/ImageUtils";
 import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Profile = () => {
-  const { user, getProfile, editProfile, error, resetError } =
+  const { profile, getProfile, editProfile, error, resetError } =
     useContext(ProfileContext);
 
   const [profilePicture, setProfilePicture] = useState("");
@@ -79,7 +79,7 @@ const Profile = () => {
           <div className="col-md-6">
             <div className="d-flex">
               <img
-                src={user.Profile_Picture || ProfilePicture}
+                src={profile.Profile_Picture || ProfilePicture}
                 alt="Profile"
                 width="200"
                 height="200"
@@ -87,7 +87,7 @@ const Profile = () => {
               />
               <div className="p-3">
                 <h2 className="m-0" style={{ color: "#FC7300" }}>
-                  {user.User_Name}
+                  {profile.User_Name}
                 </h2>
                 <div>
                   <span className="pe-3">
@@ -97,8 +97,8 @@ const Profile = () => {
                     <strong>50</strong> saved
                   </span>
                 </div>
-                <h5 style={{ color: "#FC7300" }}>{user.Full_Name}</h5>
-                <p>{user.Bio}</p>
+                <h5 style={{ color: "#FC7300" }}>{profile.Full_Name}</h5>
+                <p>{profile.Bio}</p>
               </div>
             </div>
           </div>
@@ -110,9 +110,9 @@ const Profile = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#editProfile"
                 onClick={() => {
-                  setName(user.Full_Name);
-                  setUserName(user.User_Name);
-                  setBio(user.Bio);
+                  setName(profile.Full_Name);
+                  setUserName(profile.User_Name);
+                  setBio(profile.Bio);
                 }}
                 style={{ backgroundColor: "#FC7300", color: "#F1F1F1" }}
               >
@@ -159,7 +159,9 @@ const Profile = () => {
                               >
                                 <img
                                   className="rounded-circle"
-                                  src={user.Profile_Picture || ProfilePicture}
+                                  src={
+                                    profile.Profile_Picture || ProfilePicture
+                                  }
                                   alt=""
                                 />
                                 <span>Edit Picture</span>

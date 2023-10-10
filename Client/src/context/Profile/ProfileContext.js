@@ -4,7 +4,7 @@ import api from "../api";
 
 // Initial State ------------------------------------------------------------------------
 const initialState = {
-  user: [],
+  profile: [],
   error: null,
   success: null,
   loading: true,
@@ -82,7 +82,7 @@ export const ProfileProvider = ({ children }) => {
   return (
     <ProfileContext.Provider
       value={{
-        user: state.user,
+        profile: state.profile,
         success: state.success,
         error: state.error,
         loading: state.loading,

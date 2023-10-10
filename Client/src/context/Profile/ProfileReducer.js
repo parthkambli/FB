@@ -4,14 +4,14 @@ export default (state, action) => {
     case "GET_PROFILE":
       return {
         ...state,
-        user: action.payload,
+        profile: action.payload,
         loading: false,
       };
 
     case "EDIT_PROFILE":
       return {
         ...state,
-        user: action.payload,
+        profile: action.payload,
       };
 
     case "LOADING":
