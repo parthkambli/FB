@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import ProfilePicture from "../assets/Profile.png";
 import RecipeCard from "../components/RecipeCard";
 import { imageToBase64 } from "../utils/ImageUtils";
-// import { AuthContext } from "../context/Auth/AuthContext";
 import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Profile = () => {
-  const { profile, getProfile, editProfile, error, resetError } =
+  const { profile, editProfile, error, resetError } =
     useContext(ProfileContext);
 
   const [profilePicture, setProfilePicture] = useState("");
@@ -17,11 +16,6 @@ const Profile = () => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    getProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
