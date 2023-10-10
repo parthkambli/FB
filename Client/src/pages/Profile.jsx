@@ -16,6 +16,7 @@ const Profile = () => {
   const [bio, setBio] = useState("");
 
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     getProfile();
@@ -41,8 +42,28 @@ const Profile = () => {
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
+
+    // Check if a file was selected
+    if (!file) {
+      setErrorMessage("No file selected.");
+      return;
+    }
+
+    // Define a maximum file size in bytes (e.g., 600 KB)
+    const maxFileSizeBytes = 600 * 1024; // 600 KB
+
+    // Check if the file size exceeds the maximum allowed size
+    if (file.size > maxFileSizeBytes) {
+      setErrorMessage("File size too large (max: 600 KB)");
+      return;
+    }
+
+    // If the file size is within the allowed limit, proceed with uploading the file
     const base64 = await imageToBase64(file);
     setProfilePicture(base64);
+
+    // Clear any previous error message
+    setErrorMessage("");
   };
 
   return (
@@ -151,6 +172,11 @@ const Profile = () => {
                                 // value={name}
                                 onChange={(e) => handleImageUpload(e)}
                               />
+                              {errorMessage && (
+                                <p className="pt-3 text-danger">
+                                  {errorMessage}
+                                </p>
+                              )}
                             </div>
                           </div>
                           <div className="col-8">
