@@ -7,9 +7,11 @@ import { AuthContext } from "../context/Auth/AuthContext";
 
 import Logo from "../assets/Logo.png";
 import ProfilePicture from "../assets/Profile.png";
+import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Navbar = () => {
   const { LogOut, user } = useContext(AuthContext);
+  const { profile } = useContext(ProfileContext);
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -82,7 +84,7 @@ const Navbar = () => {
               <div>
                 <Link to="/Profile">
                   <img
-                    src={ProfilePicture}
+                    src={profile.Profile_Picture || ProfilePicture}
                     alt="Profile"
                     width="40"
                     height="40"
