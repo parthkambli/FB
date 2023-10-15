@@ -1,23 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useContext, useState } from "react";
+import TagsInput from "react-tagsinput";
+import "react-tagsinput/react-tagsinput.css";
 import ProfilePicture from "../assets/Profile.png";
+import RecipeImage from "../assets/FoodIcon.png";
 import RecipeCard from "../components/RecipeCard";
 import { imageToBase64 } from "../utils/ImageUtils";
 import { ProfileContext } from "../context/Profile/ProfileContext";
+import { RecipeContext } from "../context/RecipeContext/RecipeContext";
 
 const Profile = () => {
   const { profile, editProfile, error, resetError } =
     useContext(ProfileContext);
+  const { AddRecipe } = useContext(RecipeContext);
 
   const [profilePicture, setProfilePicture] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
 
+  const [recipeImage, setRecipeImage] = useState("");
+  const [recipeName, setRecipeName] = useState("");
+  const [recipeTags, setRecipeTags] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [recipe, setRecipe] = useState("");
+
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = async (e) => {
+  const onEditProfile = async (e) => {
     e.preventDefault();
     resetError();
     const editedProfile = {
@@ -32,6 +43,29 @@ const Profile = () => {
       resetError();
     }, 3000);
     await editProfile(editedProfile);
+  };
+
+  const onAddRecipe = async (e) => {
+    e.preventDefault();
+    resetError();
+    const addedRecipe = {
+      Recipe_Title: recipeName,
+      Recipe_Type: recipeTags,
+      Ingredients: ingredients,
+      Recipe: recipe,
+      Recipe_Image: recipeImage,
+    };
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+      resetError();
+    }, 3000);
+    await AddRecipe(addedRecipe);
+    setRecipeName("");
+    setRecipeTags([]);
+    setIngredients([]);
+    setRecipeImage("");
+    setRecipe("");
   };
 
   const handleImageUpload = async (e) => {
@@ -52,9 +86,33 @@ const Profile = () => {
       return;
     }
 
-    // If the file size is within the allowed limit, proceed with uploading the file
     const base64 = await imageToBase64(file);
     setProfilePicture(base64);
+
+    // Clear any previous error message
+    setErrorMessage("");
+  };
+
+  const handleRecipeImageUpload = async (e) => {
+    const file = e.target.files[0];
+
+    // Check if a file was selected
+    if (!file) {
+      setErrorMessage("No file selected.");
+      return;
+    }
+
+    // Define a maximum file size in bytes (e.g., 600 KB)
+    const maxFileSizeBytes = 600 * 1024; // 600 KB
+
+    // Check if the file size exceeds the maximum allowed size
+    if (file.size > maxFileSizeBytes) {
+      setErrorMessage("File size too large (max: 600 KB)");
+      return;
+    }
+
+    const base64 = await imageToBase64(file);
+    setRecipeImage(base64);
 
     // Clear any previous error message
     setErrorMessage("");
@@ -112,7 +170,7 @@ const Profile = () => {
               >
                 Edit Profile
               </button>
-              {/* Modal  */}
+              {/*Edit Profilr Modal  */}
               <div
                 className="modal fade"
                 id="editProfile"
@@ -143,7 +201,7 @@ const Profile = () => {
                       ></button>
                     </div>
                     <div className="modal-body">
-                      <form className="p-4" onSubmit={onSubmit}>
+                      <form className="p-4" onSubmit={onEditProfile}>
                         <div className="row">
                           <div className="col-4">
                             <div className="mb-3">
@@ -154,7 +212,9 @@ const Profile = () => {
                                 <img
                                   className="rounded-circle"
                                   src={
-                                    profile.Profile_Picture || ProfilePicture
+                                    profilePicture ||
+                                    profile.Profile_Picture ||
+                                    ProfilePicture
                                   }
                                   alt=""
                                 />
@@ -229,10 +289,140 @@ const Profile = () => {
               <button
                 type="button"
                 className="btn btn-sm rounded-pill m-2"
+                data-bs-toggle="modal"
+                data-bs-target="#addRecipe"
                 style={{ backgroundColor: "#FC7300", color: "#F1F1F1" }}
               >
                 Add Recipe
               </button>
+              {/*Add Recipe Modal  */}
+              <div
+                className="modal fade"
+                id="addRecipe"
+                tabIndex="-1"
+                aria-labelledby="AddRecipe"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog">
+                  <div
+                    className="modal-content"
+                    style={{ backgroundColor: "#F1F1F1" }}
+                  >
+                    <div
+                      className="modal-header"
+                      style={{ backgroundColor: "#00425A" }}
+                    >
+                      <h1
+                        className="modal-title fs-5 text-white"
+                        id="EditProfile"
+                      >
+                        Add Recipe
+                      </h1>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      <form className="p-4" onSubmit={onAddRecipe}>
+                        <div className="row">
+                          <div className="col-4">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="RecipeImage"
+                                className="form-label text-center p-0 w-100 h-100 border border-0 custom-img-upload"
+                              >
+                                <img
+                                  className="rounded-circle"
+                                  src={recipeImage || RecipeImage}
+                                  alt=""
+                                />
+                                <span>Recipe Image</span>
+                              </label>
+                              <input
+                                type="file"
+                                className="form-control"
+                                id="RecipeImage"
+                                accept=".jpeg, .png, .jpg"
+                                // value={name}
+                                onChange={(e) => handleRecipeImageUpload(e)}
+                              />
+                              {errorMessage && (
+                                <p className="pt-3 text-danger">
+                                  {errorMessage}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-8">
+                            <div className="mb-3">
+                              <label htmlFor="Name" className="form-label">
+                                Recipe Name:-
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="Name"
+                                value={recipeName}
+                                onChange={(e) => setRecipeName(e.target.value)}
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="UserName" className="form-label">
+                                Tags: - (Ex: Dessert, Italian, Chinese)
+                              </label>
+                              <TagsInput
+                                value={recipeTags}
+                                className="form-control"
+                                onChange={setRecipeTags}
+                                addKeys={[9, 13]} // Specify keys to add a tag (e.g., Tab, Enter, Space, comma)
+                                inputProps={{ placeholder: "" }}
+                                onlyUnique
+                                maxTags={3} // You can set a limit on the number of tags
+                              />
+                              <p className="text-muted">3 tags allowed</p>
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="UserName" className="form-label">
+                                Ingredients: -
+                              </label>
+                              <TagsInput
+                                value={ingredients}
+                                className="form-control"
+                                onChange={setIngredients}
+                                addKeys={[9, 13]} // Specify keys to add a tag (e.g., Tab, Enter, Space, comma)
+                                inputProps={{ placeholder: "" }}
+                                onlyUnique
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label htmlFor="Bio" className="form-label">
+                                Recipe: -
+                              </label>
+                              <textarea
+                                className="form-control"
+                                id="Bio"
+                                rows="3"
+                                value={recipe}
+                                onChange={(e) => setRecipe(e.target.value)}
+                              ></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="submit"
+                          className="btn button w-100"
+                          data-bs-dismiss="modal"
+                        >
+                          Add
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

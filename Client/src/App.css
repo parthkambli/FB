@@ -60,3 +60,18 @@ input[type="file"] {
   width: 120px;
   height: 120px;
 }
+
+.react-tagsinput--focused {
+  border-color: #ccc !important;
+}
+
+.react-tagsinput-tag {
+  color: #f1f1f1 !important;
+  background-color: #fc7100a3 !important;
+  border: 1px solid #fc7300 !important;
+}
+
+.react-tagsinput-tag > a {
+  color: #f1f1f1;
+  text-decoration: none;
+}

@@ -12,6 +12,6 @@ const router = Router();
 router.use(Auth);
 
 router.route("/explore").get(getAllRecipes);
-router.route("/user").get(getUsersRecipes).post(addRecipes);
+router.route("/profile").get(getUsersRecipes).post(addRecipes);
 
 export default router;

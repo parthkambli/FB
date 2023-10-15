@@ -34,6 +34,30 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
+  // Add Recipe ------------------------
+  const AddRecipe = async (recipe) => {
+    const token = localStorage.getItem("user");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      console.log(recipe);
+      const res = await api.post("/api/recipes/profile", recipe, config);
+      dispatch({
+        type: "ADD_RECIPE",
+        payload: res.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ERROR",
+        payload: error.response.data.error,
+      });
+    }
+  };
+
   return (
     <RecipeContext.Provider
       value={{
@@ -41,6 +65,7 @@ export const RecipeProvider = ({ children }) => {
         error: state.error,
         loading: state.loading,
         GetAllRecipes,
+        AddRecipe,
       }}
     >
       {children}

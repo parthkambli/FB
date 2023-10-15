@@ -24,13 +24,14 @@ const recipeSchema = new mongoose.Schema({
       required: [true, "Ingredients can not be empty!"],
     },
   ],
-  Recipe: [
-    {
-      type: String,
-      trim: true,
-      required: [true, "Recipe can not be empty!"],
-    },
-  ],
+  Recipe: {
+    type: String,
+    trim: true,
+    required: [true, "Recipe can not be empty!"],
+  },
+  Recipe_Image: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Recipe", recipeSchema);
