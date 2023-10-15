@@ -10,9 +10,17 @@ import { ProfileContext } from "../context/Profile/ProfileContext";
 import { RecipeContext } from "../context/RecipeContext/RecipeContext";
 
 const Profile = () => {
-  const { profile, editProfile, error, resetError } =
-    useContext(ProfileContext);
-  const { AddRecipe } = useContext(RecipeContext);
+  const {
+    profile,
+    editProfile,
+    error: profileError,
+    resetError: resetProfileError,
+  } = useContext(ProfileContext);
+  const {
+    AddRecipe,
+    error: recipeError,
+    resetError: resetRecipeError,
+  } = useContext(RecipeContext);
 
   const [profilePicture, setProfilePicture] = useState("");
   const [name, setName] = useState("");
@@ -30,7 +38,7 @@ const Profile = () => {
 
   const onEditProfile = async (e) => {
     e.preventDefault();
-    resetError();
+    resetProfileError();
     const editedProfile = {
       Full_Name: name,
       User_Name: userName,
@@ -40,14 +48,14 @@ const Profile = () => {
     setShowAlert(true);
     setTimeout(() => {
       setShowAlert(false);
-      resetError();
+      resetProfileError();
     }, 3000);
     await editProfile(editedProfile);
   };
 
   const onAddRecipe = async (e) => {
     e.preventDefault();
-    resetError();
+    resetRecipeError();
     const addedRecipe = {
       Recipe_Title: recipeName,
       Recipe_Type: recipeTags,
@@ -58,7 +66,7 @@ const Profile = () => {
     setShowAlert(true);
     setTimeout(() => {
       setShowAlert(false);
-      resetError();
+      resetRecipeError();
     }, 3000);
     await AddRecipe(addedRecipe);
     setRecipeName("");
@@ -121,9 +129,9 @@ const Profile = () => {
   return (
     <div className="container">
       <div className="p-2 my-2" style={{ backgroundColor: "#F1F1F1" }}>
-        {error && showAlert && (
+        {(profileError || recipeError) && showAlert && (
           <div className="alert alert-danger" role="alert">
-            {error}
+            {profileError || recipeError}
           </div>
         )}
         {/* Later place the error in modal */}

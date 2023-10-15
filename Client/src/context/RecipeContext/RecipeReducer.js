@@ -14,6 +14,12 @@ export default (state, action) => {
         recipes: [...state.recipes, action.payload],
       };
 
+    case "RESET_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     case "ERROR":
       return {
         ...state,

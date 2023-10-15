@@ -46,6 +46,7 @@ export const addRecipes = async (req, res) => {
       ...req.body,
       user_id,
     };
+    
     const recipe = await Recipe.create(recipeData);
     return res.status(200).json({ success: true, data: recipe });
   } catch (error) {

@@ -18,7 +18,7 @@ export const RecipeProvider = ({ children }) => {
 
   // Actions --------------------------------------------------------
 
-  // Get all Recipes -------------------
+  // Get all Recipes ------------------------------
   const GetAllRecipes = async () => {
     try {
       const res = await api.get("/api/recipes/explore");
@@ -34,7 +34,7 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
-  // Add Recipe ------------------------
+  // Add Recipe -----------------------------------
   const AddRecipe = async (recipe) => {
     const token = localStorage.getItem("user");
     const config = {
@@ -44,7 +44,6 @@ export const RecipeProvider = ({ children }) => {
       },
     };
     try {
-      console.log(recipe);
       const res = await api.post("/api/recipes/profile", recipe, config);
       dispatch({
         type: "ADD_RECIPE",
@@ -58,6 +57,14 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
+  // Reset Error ----------------------------------
+  async function resetError() {
+    dispatch({
+      type: "ERROR",
+      payload: null,
+    });
+  }
+
   return (
     <RecipeContext.Provider
       value={{
@@ -66,6 +73,7 @@ export const RecipeProvider = ({ children }) => {
         loading: state.loading,
         GetAllRecipes,
         AddRecipe,
+        resetError,
       }}
     >
       {children}

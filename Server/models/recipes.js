@@ -14,7 +14,7 @@ const recipeSchema = new mongoose.Schema({
     {
       type: String,
       trim: true,
-      required: [true, "Recipe type can not be empty!"],
+      required: [true, "Recipe Tag can not be empty!"],
     },
   ],
   Ingredients: [
