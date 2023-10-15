@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TagsInput from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css";
 import ProfilePicture from "../assets/Profile.png";
@@ -12,6 +12,7 @@ import { RecipeContext } from "../context/RecipeContext/RecipeContext";
 const Profile = () => {
   const {
     profile,
+    getProfile,
     editProfile,
     error: profileError,
     resetError: resetProfileError,
@@ -35,6 +36,11 @@ const Profile = () => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onEditProfile = async (e) => {
     e.preventDefault();
@@ -366,19 +372,22 @@ const Profile = () => {
                           </div>
                           <div className="col-8">
                             <div className="mb-3">
-                              <label htmlFor="Name" className="form-label">
+                              <label
+                                htmlFor="RecipeName"
+                                className="form-label"
+                              >
                                 Recipe Name:-
                               </label>
                               <input
                                 type="text"
                                 className="form-control"
-                                id="Name"
+                                id="RecipeName"
                                 value={recipeName}
                                 onChange={(e) => setRecipeName(e.target.value)}
                               />
                             </div>
                             <div className="mb-3">
-                              <label htmlFor="UserName" className="form-label">
+                              <label htmlFor="Tags" className="form-label">
                                 Tags: - (Ex: Dessert, Italian, Chinese)
                               </label>
                               <TagsInput
@@ -393,7 +402,10 @@ const Profile = () => {
                               <p className="text-muted">3 tags allowed</p>
                             </div>
                             <div className="mb-3">
-                              <label htmlFor="UserName" className="form-label">
+                              <label
+                                htmlFor="Ingredients"
+                                className="form-label"
+                              >
                                 Ingredients: -
                               </label>
                               <TagsInput
@@ -406,12 +418,12 @@ const Profile = () => {
                               />
                             </div>
                             <div className="mb-3">
-                              <label htmlFor="Bio" className="form-label">
+                              <label htmlFor="Recipe" className="form-label">
                                 Recipe: -
                               </label>
                               <textarea
                                 className="form-control"
-                                id="Bio"
+                                id="Recipe"
                                 rows="3"
                                 value={recipe}
                                 onChange={(e) => setRecipe(e.target.value)}
