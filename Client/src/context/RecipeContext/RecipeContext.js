@@ -5,6 +5,7 @@ import api from "../api";
 // Initial State ------------------------------------------------------------------------
 const initialState = {
   recipes: [],
+  recipe: [],
   error: null,
   loading: true,
 };
@@ -24,6 +25,28 @@ export const RecipeProvider = ({ children }) => {
       const res = await api.get("/api/recipes/explore");
       dispatch({
         type: "GET_ALL_RECIPES",
+        payload: res.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ERROR",
+        payload: error.response.data.error,
+      });
+    }
+  };
+
+  // Get single Recipe ----------------------------
+  const GetSingleRecipe = async (id) => {
+    const token = localStorage.getItem("user");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await api.get(`/api/recipes/${id}`, config);
+      dispatch({
+        type: "GET_RECIPE",
         payload: res.data.data,
       });
     } catch (error) {
@@ -91,9 +114,11 @@ export const RecipeProvider = ({ children }) => {
     <RecipeContext.Provider
       value={{
         recipes: state.recipes,
+        recipe: state.recipe,
         error: state.error,
         loading: state.loading,
         GetAllRecipes,
+        GetSingleRecipe,
         GetUsersRecipes,
         AddRecipe,
         resetError,

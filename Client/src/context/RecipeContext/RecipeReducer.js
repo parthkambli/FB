@@ -8,6 +8,13 @@ export default (state, action) => {
         loading: false,
       };
 
+    case "GET_RECIPE":
+      return {
+        ...state,
+        recipe: action.payload,
+        loading: false,
+      };
+
     case "GET_USERS_RECIPES":
       return {
         ...state,

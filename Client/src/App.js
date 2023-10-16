@@ -31,7 +31,7 @@ const App = () => {
                 element={!user ? <Landing /> : <Navigate to="/" />}
               />
               <Route
-                path="/RecipeDetail"
+                path="/RecipeDetail/:recipeId"
                 element={user ? <RecipeDetail /> : <Navigate to="/landing" />}
               />
               <Route

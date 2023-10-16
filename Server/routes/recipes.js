@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addRecipes,
   getAllRecipes,
+  getSingleRecipe,
   getUsersRecipes,
 } from "../controllers/recipes.js";
 import Auth from "../middleware/Auth.js";
@@ -13,5 +14,6 @@ router.use(Auth);
 
 router.route("/explore").get(getAllRecipes);
 router.route("/profile").get(getUsersRecipes).post(addRecipes);
+router.route("/:id").get(getSingleRecipe);
 
 export default router;

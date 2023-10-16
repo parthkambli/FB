@@ -1,10 +1,23 @@
-import { Link } from "react-router-dom";
-import RecipeImg from "../assets/club-sandwich.jpg";
+import { Link, useParams } from "react-router-dom";
+import RecipeImg from "../assets/FoodIcon.png";
 import ProfilePicture from "../assets/Profile.png";
 
 import { FaHeart } from "react-icons/fa";
+import { useContext, useEffect } from "react";
+import { RecipeContext } from "../context/RecipeContext/RecipeContext";
+import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const RecipeDetail = () => {
+  const { recipeId } = useParams();
+  const { getProfile, profile } = useContext(ProfileContext);
+  const { GetSingleRecipe, recipe } = useContext(RecipeContext);
+
+  useEffect(() => {
+    getProfile();
+    GetSingleRecipe(recipeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="container">
       <div className="row my-2">
@@ -16,87 +29,72 @@ const RecipeDetail = () => {
             <Link to="/Profile" className="text-decoration-none text-black">
               <div className="d-flex justify-content-start align-items-center">
                 <img
-                  src={ProfilePicture}
+                  src={profile.Profile_Picture || ProfilePicture}
                   alt="Profile"
                   width="40"
                   height="40"
                   className="rounded-circle"
                 />
-                <h6 className="m-0 ms-2">Sanjeev Kapoor</h6>
+                <h6 className="m-0 ms-2">{profile.User_Name}</h6>
               </div>
             </Link>
             <h2 className="m-0 align-self-end" style={{ color: "#FC7300" }}>
-              Club Sandwich
+              {recipe.Recipe_Title}
             </h2>
           </div>
         </div>
         <div className="col-md-4 ">
           <div className="card text-bg-dark border border-0">
             <img
-              src={RecipeImg}
+              src={recipe.Recipe_Image || RecipeImg}
               className="card-img rounded rounded-0"
               alt="..."
             />
             <div className="card-img-overlay">
-              <span className="position-absolute bottom-0 end-0 badge p-2">
+              <span
+                className="position-absolute bottom-0 end-0 badge m-2"
+                style={{
+                  backgroundColor: "rgba(0, 66, 90, 0.8)",
+                  color: "#FFFFFF",
+                }}
+              >
                 128k <FaHeart />
                 <span className="visually-hidden">unread messages</span>
               </span>
             </div>
           </div>
-          <div className="p-3 my-2" style={{ backgroundColor: "#FC7300" }}>
-            <h3 style={{ color: "#F1F1F1" }}>Ingredients :-</h3>
-            <span>
+          {recipe && recipe.Ingredients ? (
+            <div className="p-3 my-2" style={{ backgroundColor: "#FC7300" }}>
+              <h3 style={{ color: "#F1F1F1" }}>Ingredients :-</h3>
               <ul>
-                <li>3 pieces sliced bread Butter, softened</li>
-                <li>3 tbsp. mayonnaise Romaine</li>
-                <li>2 tomato slices Kosher salt</li>
-                <li>Freshly ground black pepper</li>
-                <li>2 pieces bacon, cooked</li>
-                <li>1 thick slice cheddar</li>
-                <li>2 slices turkey</li>
-                <li>2 slices ham</li>
+                {recipe.Ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
               </ul>
-            </span>
-          </div>
+            </div>
+          ) : (
+            <p>Loading Ingredients...</p>
+          )}
         </div>
         <div className="col-md-8">
           <div className="p-3 h-100" style={{ backgroundColor: "#00425A" }}>
             <div className="d-flex justify-content-between align-items-start">
               <h3 style={{ color: "#FC7300" }}>Recipe :-</h3>
-              <div>
-                <span
-                  className="badge rounded-pill fs-6 mx-1"
-                  style={{ backgroundColor: "#FC7300" }}
-                >
-                  Snack
-                </span>
-                <span
-                  className="badge rounded-pill fs-6 mx-1"
-                  style={{ backgroundColor: "#FC7300" }}
-                >
-                  Breakfast
-                </span>
-              </div>
+              {recipe && recipe.Recipe_Type && (
+                <div>
+                  {recipe.Recipe_Type.map((tag, index) => (
+                    <span
+                      className="badge rounded-pill fs-6 mx-1"
+                      style={{ backgroundColor: "#FC7300" }}
+                      key={index}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-            <ul style={{ color: "#F1F1F1" }}>
-              <li>
-                Toast bread until golden, then spread a thin layer of butter on
-                both sides of every slice.
-              </li>
-              <li>
-                Spread mayonnaise on one side of one slice of bread. Top with
-                lettuce and tomato slices, then season lightly with salt and
-                pepper. Place bacon slices on top.
-              </li>
-              <li>
-                Spread mayonnaise on both sides of a second piece of bread and
-                place on top of bacon. Top with cheddar, turkey, and ham. Spread
-                mayonnaise on one side of the last piece of bread and place on
-                top of sandwich, mayo side down.
-              </li>
-              <li> Secure with toothpicks and cut into 4 triangles.</li>
-            </ul>
+            <p style={{ color: "#F1F1F1" }}>{recipe.Recipe}</p>
           </div>
         </div>
       </div>
