@@ -18,7 +18,9 @@ const Profile = () => {
     resetError: resetProfileError,
   } = useContext(ProfileContext);
   const {
+    GetUsersRecipes,
     AddRecipe,
+    recipes,
     error: recipeError,
     resetError: resetRecipeError,
   } = useContext(RecipeContext);
@@ -39,6 +41,7 @@ const Profile = () => {
 
   useEffect(() => {
     getProfile();
+    GetUsersRecipes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -446,8 +449,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {/* <hr className="mb-0" style={{ color: "#FC7300" }} /> */}
-
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <a className="nav-link active" aria-current="page" href="#">
@@ -462,30 +463,18 @@ const Profile = () => {
         </ul>
       </div>
       <div className="row py-2">
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
-        <div className="col-xl-3 col-lg-4 col-sm-6">
-          <RecipeCard />
-        </div>
+        {recipes.map((recipe) => (
+          <div className="col-xl-3 col-lg-4 col-sm-6" key={recipe._id}>
+            <RecipeCard
+              image={recipe.Recipe_Image}
+              title={recipe.Recipe_Title}
+              tags={recipe.Recipe_Type}
+              ingredients={recipe.Ingredients}
+              recipe={recipe.Recipe}
+              showUser={false}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
