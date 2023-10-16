@@ -21,39 +21,47 @@ const RecipeCard = (props) => {
     }
     return text;
   };
+
   return (
     <div
       className="card my-2 border-0 rounded rounded-0"
       style={{ backgroundColor: "#00425A", color: "#F1F1F1", height: "400px" }}
     >
-      <div className="card text-bg-dark border border-0 ">
-        <Link to="/RecipeDetail" className="text-decoration-none">
+      <div className="card text-bg-dark border border-0">
+        <Link
+          to="/RecipeDetail"
+          className="text-decoration-none"
+          style={{ position: "relative", display: "block" }}
+        >
           <img
             src={image || RecipeImg}
             className="card-img rounded rounded-0"
             style={{ height: "200px" }}
             alt={title}
           />
+          <div
+            className="m-2"
+            style={{ position: "absolute", top: "0", right: "0" }}
+          >
+            {tags.map((tag, index) => (
+              <span
+                className="badge rounded-pill mx-1"
+                style={{ backgroundColor: "#FC7300" }}
+                key={index}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </Link>
       </div>
-      <div className="card-img-overlay">
-        {tags.map((tag, index) => (
-          <span
-            className="badge rounded-pill mx-1"
-            style={{ backgroundColor: "#FC7300" }}
-            key={index}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
       <div className="card-body">
-        <Link to="/RecipeDetail" className="text-decoration-none text-white">
+        <Link to="/RecipeDetail" className="text-decoration-none">
           <h4 className="card-title fw-bold" style={{ color: "#FC7300" }}>
             {title}
           </h4>
-          <p className="card-text">{restrictText(recipe, 20)}</p>
         </Link>
+        <p className="card-text">{restrictText(recipe, 20)}</p>
       </div>
       <div className="card-footer border-0">
         {showUser ? (
