@@ -8,7 +8,13 @@ import recipes from "../models/recipes.js";
 // -----------------------------------------------------------------------------------------------
 export const getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find({});
+    const recipeCount = await Recipe.countDocuments(); // Get the total count of recipes
+    const sampleSize = recipeCount; // Use the count as the sample size
+
+    const recipes = await Recipe.aggregate([
+      { $sample: { size: sampleSize } }, // Retrieve all recipes in a random order
+    ]);
+
     return res
       .status(200)
       .json({ success: true, count: recipes.length, data: recipes });

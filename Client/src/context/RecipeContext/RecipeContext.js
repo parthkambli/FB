@@ -21,8 +21,14 @@ export const RecipeProvider = ({ children }) => {
 
   // Get all Recipes ------------------------------
   const GetAllRecipes = async () => {
+    const token = localStorage.getItem("user");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     try {
-      const res = await api.get("/api/recipes/explore");
+      const res = await api.get("/api/recipes/explore", config);
       dispatch({
         type: "GET_ALL_RECIPES",
         payload: res.data.data,
