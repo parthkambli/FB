@@ -61,7 +61,7 @@ const RecipeCard = (props) => {
             {title}
           </h4>
         </Link>
-        <p className="card-text">{restrictText(recipe, 20)}</p>
+        <p className="card-text">{restrictText(recipe, 15)}</p>
       </div>
       <div className="card-footer border-0">
         {showUser ? (

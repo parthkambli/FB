@@ -160,7 +160,7 @@ const Profile = () => {
                 </h2>
                 <div>
                   <span className="pe-3">
-                    <strong>50</strong> Recipes
+                    <strong>{recipes.length}</strong> Recipes
                   </span>
                   <span className="pe-3">
                     <strong>50</strong> saved
