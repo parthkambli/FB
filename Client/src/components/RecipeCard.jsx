@@ -6,7 +6,7 @@ import {
   FaRegHeart,
   FaRegBookmark,
   FaShare,
-  // FaHeart,
+  FaHeart,
   // FaFileExcel,
 } from "react-icons/fa";
 
@@ -53,6 +53,20 @@ const RecipeCard = (props) => {
               </span>
             ))}
           </div>
+          <div
+            className="m-2"
+            style={{ position: "absolute", bottom: "0", right: "0" }}
+          >
+            <span
+              className="position-absolute bottom-0 end-0 badge"
+              style={{
+                backgroundColor: "rgba(0, 66, 90, 0.7)",
+                color: "#FFFFFF",
+              }}
+            >
+              128k <FaHeart />
+            </span>
+          </div>
         </Link>
       </div>
       <div className="card-body">
@@ -61,10 +75,10 @@ const RecipeCard = (props) => {
             {title}
           </h4>
         </Link>
-        <p className="card-text">{restrictText(recipe, 15)}</p>
+        <p className="card-text">{restrictText(recipe, 10)}</p>
       </div>
       <div className="card-footer border-0">
-        {showUser ? (
+        {showUser && (
           <div className="d-flex justify-content-between">
             <Link to="/Profile" className="text-decoration-none text-white">
               <div className="d-flex justify-content-start align-items-center">
@@ -83,13 +97,6 @@ const RecipeCard = (props) => {
               <FaRegBookmark className="me-1" />
               <FaShare className="me-1" />
             </div>
-          </div>
-        ) : (
-          <div className="d-flex justify-content-end align-items-center">
-            <span>
-              128k
-              <FaRegHeart className="ms-1" />
-            </span>
           </div>
         )}
       </div>

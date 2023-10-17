@@ -54,12 +54,11 @@ const RecipeDetail = () => {
               <span
                 className="position-absolute bottom-0 end-0 badge m-2"
                 style={{
-                  backgroundColor: "rgba(0, 66, 90, 0.8)",
+                  backgroundColor: "rgba(0, 66, 90, 0.7)",
                   color: "#FFFFFF",
                 }}
               >
                 128k <FaHeart />
-                <span className="visually-hidden">unread messages</span>
               </span>
             </div>
           </div>
