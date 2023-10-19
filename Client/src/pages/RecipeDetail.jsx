@@ -9,7 +9,7 @@ import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const RecipeDetail = () => {
   const { recipeId } = useParams();
-  const { getProfile, profile } = useContext(ProfileContext);
+  const { getProfile } = useContext(ProfileContext);
   const { GetSingleRecipe, recipe } = useContext(RecipeContext);
 
   useEffect(() => {
@@ -29,13 +29,21 @@ const RecipeDetail = () => {
             <Link to="/Profile" className="text-decoration-none text-black">
               <div className="d-flex justify-content-start align-items-center">
                 <img
-                  src={profile.Profile_Picture || ProfilePicture}
+                  src={
+                    recipe.user_id && recipe.user_id.Profile_Picture
+                      ? recipe.user_id.Profile_Picture
+                      : ProfilePicture
+                  }
                   alt="Profile"
                   width="40"
                   height="40"
                   className="rounded-circle"
                 />
-                <h6 className="m-0 ms-2">{profile.User_Name}</h6>
+                <h6 className="m-0 ms-2">
+                  {recipe.user_id && recipe.user_id.User_Name
+                    ? recipe.user_id.User_Name
+                    : "Loading..."}
+                </h6>
               </div>
             </Link>
             <h2 className="m-0 align-self-end" style={{ color: "#FC7300" }}>

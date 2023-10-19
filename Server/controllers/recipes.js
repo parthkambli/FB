@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 import Recipe from "../models/recipes.js";
-import recipes from "../models/recipes.js";
+
+// Function to shuffle an array
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 // -----------------------------------------------------------------------------------------------
 // @desc - get all Recipes
@@ -8,18 +17,21 @@ import recipes from "../models/recipes.js";
 // -----------------------------------------------------------------------------------------------
 export const getAllRecipes = async (req, res) => {
   try {
-    const recipeCount = await Recipe.countDocuments(); // Get the total count of recipes
-    const sampleSize = recipeCount; // Use the count as the sample size
+    const recipesBeforeShuffle = await Recipe.find({}) // Find all recipes
+      .populate({
+        path: "user_id",
+        model: "User",
+        select: "User_Name Profile_Picture",
+      });
 
-    const recipes = await Recipe.aggregate([
-      { $sample: { size: sampleSize } }, // Retrieve all recipes in a random order
-    ]);
+    // Shuffle the array of recipes
+    const recipes = shuffleArray(recipesBeforeShuffle);
 
     return res
       .status(200)
       .json({ success: true, count: recipes.length, data: recipes });
   } catch (error) {
-    return res.status(500).json({ success: false, error: "Server Error" });
+    return res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -44,25 +56,31 @@ export const getUsersRecipes = async (req, res) => {
 
 // -----------------------------------------------------------------------------------------------
 // @desc - get single Recipes
-// @route - GET /api/recipes
+// @route - GET /api/recipes/:id
 // -----------------------------------------------------------------------------------------------
 export const getSingleRecipe = async (req, res) => {
   const { id } = req.params;
+
   try {
-    // Check for mongoose valide id
+    // Check for mongoose valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
         .status(404)
-        .json({ success: false, error: "Product Not Found" });
+        .json({ success: false, error: "Recipe Not Found" });
     }
 
-    const recipe = await Recipe.findById(id);
+    // Use the populate method to fetch user data along with the recipe
+    const recipe = await Recipe.findById(id).populate({
+      path: "user_id",
+      model: "User",
+      select: "User_Name Profile_Picture",
+    });
 
-    // Check for existence of recipe
+    // Check for the existence of the recipe
     if (!recipe) {
       return res
         .status(404)
-        .json({ success: false, error: "Product Not Found" });
+        .json({ success: false, error: "Recipe Not Found" });
     }
 
     res.status(200).json({ success: true, data: recipe });

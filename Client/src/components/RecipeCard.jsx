@@ -11,7 +11,16 @@ import {
 } from "react-icons/fa";
 
 const RecipeCard = (props) => {
-  const { id, image, title, tags, showUser, recipe } = props;
+  const {
+    id,
+    userName,
+    userImage,
+    recipeImage,
+    title,
+    tags,
+    showUser,
+    recipe,
+  } = props;
 
   // Define a function to restrict the text to a certain number of words
   const restrictText = (text, wordCount) => {
@@ -34,7 +43,7 @@ const RecipeCard = (props) => {
           style={{ position: "relative", display: "block" }}
         >
           <img
-            src={image || RecipeImg}
+            src={recipeImage || RecipeImg}
             className="card-img rounded rounded-0"
             style={{ height: "200px" }}
             alt={title}
@@ -83,13 +92,13 @@ const RecipeCard = (props) => {
             <Link to="/Profile" className="text-decoration-none text-white">
               <div className="d-flex justify-content-start align-items-center">
                 <img
-                  src={ProfilePicture}
+                  src={userImage || ProfilePicture}
                   alt="Profile"
                   width="25"
                   height="25"
                   className="rounded-circle"
                 />
-                <h6 className="ms-2 m-0 align-self-end">Sanjeev Kapoor</h6>
+                <h6 className="ms-2 m-0 align-self-end">{userName}</h6>
               </div>
             </Link>
             <div className="d-flex align-items-center">
