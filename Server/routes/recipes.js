@@ -13,7 +13,8 @@ const router = Router();
 router.use(Auth);
 
 router.route("/explore").get(getAllRecipes);
-router.route("/profile").get(getUsersRecipes).post(addRecipes);
+router.route("/profile").post(addRecipes);
+router.route("/profile/:user_id").get(getUsersRecipes);
 router.route("/:id").get(getSingleRecipe);
 
 export default router;

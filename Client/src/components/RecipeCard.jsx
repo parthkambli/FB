@@ -89,7 +89,10 @@ const RecipeCard = (props) => {
       <div className="card-footer border-0">
         {showUser && (
           <div className="d-flex justify-content-between">
-            <Link to="/Profile" className="text-decoration-none text-white">
+            <Link
+              to={`/${userName}`}
+              className="text-decoration-none text-white"
+            >
               <div className="d-flex justify-content-start align-items-center">
                 <img
                   src={userImage || ProfilePicture}

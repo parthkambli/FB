@@ -8,11 +8,16 @@ import RecipeCard from "../components/RecipeCard";
 import { imageToBase64 } from "../utils/ImageUtils";
 import { ProfileContext } from "../context/Profile/ProfileContext";
 import { RecipeContext } from "../context/RecipeContext/RecipeContext";
+import { useParams } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ params }) => {
+  const { user_name } = useParams();
+
   const {
     profile,
     getProfile,
+    userData,
+    getUserData,
     editProfile,
     error: profileError,
     resetError: resetProfileError,
@@ -40,8 +45,15 @@ const Profile = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    getProfile();
-    GetUsersRecipes();
+    if (params) {
+      getUserData(user_name).then(() => {
+        GetUsersRecipes(userData._id);
+      });
+    } else {
+      getProfile().then(() => {
+        GetUsersRecipes(profile._id);
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,7 +160,11 @@ const Profile = () => {
           <div className="col-md-6">
             <div className="d-flex">
               <img
-                src={profile.Profile_Picture || ProfilePicture}
+                src={
+                  userData.Profile_Picture ||
+                  profile.Profile_Picture ||
+                  ProfilePicture
+                }
                 alt="Profile"
                 width="200"
                 height="200"
@@ -156,7 +172,7 @@ const Profile = () => {
               />
               <div className="p-3">
                 <h2 className="m-0" style={{ color: "#FC7300" }}>
-                  {profile.User_Name}
+                  {userData.User_Name || profile.User_Name}
                 </h2>
                 <div>
                   <span className="pe-3">
@@ -166,8 +182,10 @@ const Profile = () => {
                     <strong>50</strong> saved
                   </span>
                 </div>
-                <h5 style={{ color: "#FC7300" }}>{profile.Full_Name}</h5>
-                <p>{profile.Bio}</p>
+                <h5 style={{ color: "#FC7300" }}>
+                  {userData.Full_Name || profile.Full_Name}
+                </h5>
+                <p>{userData.Bio || profile.Bio}</p>
               </div>
             </div>
           </div>

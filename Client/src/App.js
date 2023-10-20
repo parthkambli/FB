@@ -36,7 +36,15 @@ const App = () => {
               />
               <Route
                 path="/Profile"
-                element={user ? <Profile /> : <Navigate to="/landing" />}
+                element={
+                  user ? <Profile params={false} /> : <Navigate to="/landing" />
+                }
+              />
+              <Route
+                path="/:user_name"
+                element={
+                  user ? <Profile params={true} /> : <Navigate to="/landing" />
+                }
               />
             </Routes>
           </BrowserRouter>

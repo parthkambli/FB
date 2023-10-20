@@ -112,9 +112,9 @@ export const loginUser = async (req, res) => {
 
 // -----------------------------------------------------------------------------------------------
 // @desc - get user
-// @route - PUT /api/users/edit
+// @route - PUT /api/users/Profile
 // -----------------------------------------------------------------------------------------------
-export const getUser = async (req, res) => {
+export const getLogedInUser = async (req, res) => {
   try {
     // Get the authenticated user's ID from the token
     const userId = req.user._id;
@@ -134,8 +134,31 @@ export const getUser = async (req, res) => {
 };
 
 // -----------------------------------------------------------------------------------------------
+// @desc - get user
+// @route - PUT /api/users/Profile
+// -----------------------------------------------------------------------------------------------
+export const getUser = async (req, res) => {
+  // Get the user_name from params
+  const { user_name } = req.params;
+
+  try {
+    // Query the database to find the user by their User_name
+    const user = await User.findOne({ User_Name: user_name });
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // If the user is found, return their information
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
+// -----------------------------------------------------------------------------------------------
 // @desc - edit user
-// @route - PUT /api/users/edit
+// @route - PUT /api/users/Profile
 // -----------------------------------------------------------------------------------------------
 export const editUser = async (req, res) => {
   const { Profile_Picture, Bio, Full_Name, User_Name } = req.body;

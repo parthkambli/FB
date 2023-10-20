@@ -64,7 +64,7 @@ export const RecipeProvider = ({ children }) => {
   };
 
   // Get users Recipes ----------------------------
-  const GetUsersRecipes = async () => {
+  const GetUsersRecipes = async (user_id) => {
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -72,7 +72,7 @@ export const RecipeProvider = ({ children }) => {
       },
     };
     try {
-      const res = await api.get("/api/recipes/profile", config);
+      const res = await api.get(`/api/recipes/profile/${user_id}`, config);
       dispatch({
         type: "GET_USERS_RECIPES",
         payload: res.data.data,

@@ -41,7 +41,7 @@ export const getAllRecipes = async (req, res) => {
 // -----------------------------------------------------------------------------------------------
 export const getUsersRecipes = async (req, res) => {
   try {
-    const user_id = req.user._id;
+    const { user_id } = req.params;
     const recipes = await Recipe.find({ user_id });
     return res.status(200).json({
       success: true,

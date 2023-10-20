@@ -1,14 +1,11 @@
 import { useContext, useEffect } from "react";
 import RecipeCard from "../components/RecipeCard";
-import { ProfileContext } from "../context/Profile/ProfileContext";
 import { RecipeContext } from "../context/RecipeContext/RecipeContext";
 
 const Home = () => {
-  const { getProfile } = useContext(ProfileContext);
   const { GetAllRecipes, recipes } = useContext(RecipeContext);
 
   useEffect(() => {
-    getProfile();
     GetAllRecipes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

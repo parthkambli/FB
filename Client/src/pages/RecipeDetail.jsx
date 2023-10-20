@@ -5,15 +5,12 @@ import ProfilePicture from "../assets/Profile.png";
 import { FaHeart } from "react-icons/fa";
 import { useContext, useEffect } from "react";
 import { RecipeContext } from "../context/RecipeContext/RecipeContext";
-import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const RecipeDetail = () => {
   const { recipeId } = useParams();
-  const { getProfile } = useContext(ProfileContext);
   const { GetSingleRecipe, recipe } = useContext(RecipeContext);
 
   useEffect(() => {
-    getProfile();
     GetSingleRecipe(recipeId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

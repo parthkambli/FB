@@ -5,6 +5,7 @@ import api from "../api";
 // Initial State ------------------------------------------------------------------------
 const initialState = {
   profile: [],
+  userData: [],
   error: null,
   success: null,
   loading: true,
@@ -19,7 +20,7 @@ export const ProfileProvider = ({ children }) => {
 
   // Actions --------------------------------------------------------
 
-  // Get User Profile -----------------------------
+  // Get logedIn User Profile ---------------------
   const getProfile = async () => {
     const token = localStorage.getItem("user");
     const config = {
@@ -31,6 +32,28 @@ export const ProfileProvider = ({ children }) => {
       const res = await api.get("/api/user/profile", config);
       dispatch({
         type: "GET_PROFILE",
+        payload: res.data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ERROR",
+        payload: error.response.data.error,
+      });
+    }
+  };
+
+  // Get other user data --------------------------
+  const getUserData = async (user_name) => {
+    const token = localStorage.getItem("user");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await api.get(`/api/user/${user_name}`, config);
+      dispatch({
+        type: "GET_USER_DATA",
         payload: res.data.data,
       });
     } catch (error) {
@@ -63,6 +86,7 @@ export const ProfileProvider = ({ children }) => {
       });
     }
   };
+
   // Reset Success --------------------------------
   async function resetSuccess() {
     dispatch({
@@ -83,10 +107,12 @@ export const ProfileProvider = ({ children }) => {
     <ProfileContext.Provider
       value={{
         profile: state.profile,
+        userData: state.userData,
         success: state.success,
         error: state.error,
         loading: state.loading,
         getProfile,
+        getUserData,
         editProfile,
         resetSuccess,
         resetError,

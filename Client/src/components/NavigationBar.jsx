@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ import { ProfileContext } from "../context/Profile/ProfileContext";
 
 const Navbar = () => {
   const { LogOut, user } = useContext(AuthContext);
-  const { profile } = useContext(ProfileContext);
+  const { getProfile, profile } = useContext(ProfileContext);
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -19,6 +19,11 @@ const Navbar = () => {
     e.preventDefault();
     await LogOut();
   };
+
+  useEffect(() => {
+    getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="sticky-top">
