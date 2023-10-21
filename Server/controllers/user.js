@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Recipes from "../models/recipes.js";
 
 // Create token
 const createToken = (_id) => {
@@ -125,9 +126,11 @@ export const getLogedInUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
+    // Get recipes of this user
+    const recipes = await Recipes.find({ user_id: user._id });
 
     // If the user is found, return their information
-    return res.status(200).json({ success: true, data: user });
+    return res.status(200).json({ success: true, data: { user, recipes } });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }
@@ -149,8 +152,10 @@ export const getUser = async (req, res) => {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
+    const recipes = await Recipes.find({ user_id: user._id });
+
     // If the user is found, return their information
-    return res.status(200).json({ success: true, data: user });
+    return res.status(200).json({ success: true, data: { user, recipes } });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }

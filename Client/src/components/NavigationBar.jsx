@@ -89,7 +89,7 @@ const Navbar = () => {
               <div>
                 <Link to="/Profile">
                   <img
-                    src={profile.Profile_Picture || ProfilePicture}
+                    src={profile?.user?.Profile_Picture || ProfilePicture}
                     alt="Profile"
                     width="40"
                     height="40"
