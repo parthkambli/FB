@@ -3,7 +3,6 @@ import {
   addRecipes,
   getAllRecipes,
   getSingleRecipe,
-  getUsersRecipes,
 } from "../controllers/recipes.js";
 import Auth from "../middleware/Auth.js";
 
@@ -14,7 +13,7 @@ router.use(Auth);
 
 router.route("/explore").get(getAllRecipes);
 router.route("/profile").post(addRecipes);
-router.route("/profile/:user_id").get(getUsersRecipes);
+router.route("/profile/:user_id")
 router.route("/:id").get(getSingleRecipe);
 
 export default router;

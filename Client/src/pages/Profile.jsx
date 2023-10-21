@@ -23,7 +23,6 @@ const Profile = ({ params }) => {
     resetError: resetProfileError,
   } = useContext(ProfileContext);
   const {
-    GetUsersRecipes,
     AddRecipe,
     error: recipeError,
     resetError: resetRecipeError,
@@ -45,13 +44,9 @@ const Profile = ({ params }) => {
 
   useEffect(() => {
     if (params) {
-      getUserData(user_name).then(() => {
-        GetUsersRecipes(userData._id);
-      });
+      getUserData(user_name).then(() => {});
     } else {
-      getProfile().then(() => {
-        GetUsersRecipes(profile._id);
-      });
+      getProfile().then(() => {});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

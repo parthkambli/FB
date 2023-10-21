@@ -63,28 +63,6 @@ export const RecipeProvider = ({ children }) => {
     }
   };
 
-  // Get users Recipes ----------------------------
-  const GetUsersRecipes = async (user_id) => {
-    const token = localStorage.getItem("user");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const res = await api.get(`/api/recipes/profile/${user_id}`, config);
-      dispatch({
-        type: "GET_USERS_RECIPES",
-        payload: res.data.data,
-      });
-    } catch (error) {
-      dispatch({
-        type: "ERROR",
-        payload: error.response.data.error,
-      });
-    }
-  };
-
   // Add Recipe -----------------------------------
   const AddRecipe = async (recipe) => {
     const token = localStorage.getItem("user");
@@ -125,7 +103,6 @@ export const RecipeProvider = ({ children }) => {
         loading: state.loading,
         GetAllRecipes,
         GetSingleRecipe,
-        GetUsersRecipes,
         AddRecipe,
         resetError,
       }}
