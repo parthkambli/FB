@@ -6,7 +6,6 @@ import api from "../api";
 const initialState = {
   user: localStorage.getItem("user") || null,
   error: null,
-  loading: true,
 };
 
 // Create Context ------------------------------------------------------------------------
@@ -39,10 +38,6 @@ export const AuthProvider = ({ children }) => {
         type: "LOGIN",
         payload: res.data.token,
       });
-      dispatch({
-        type: "LOADING",
-        payload: false,
-      });
       window.location.reload();
     } catch (error) {
       dispatch({
@@ -65,10 +60,6 @@ export const AuthProvider = ({ children }) => {
       dispatch({
         type: "LOGIN",
         payload: res.data.token,
-      });
-      dispatch({
-        type: "LOADING",
-        payload: false,
       });
       window.location.reload();
     } catch (error) {
@@ -108,7 +99,6 @@ export const AuthProvider = ({ children }) => {
       value={{
         user: state.user,
         error: state.error,
-        loading: state.loading,
         resetError,
         SignUp,
         LogIn,

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import User from "../models/user.js";
 import Recipes from "../models/recipes.js";
 
 // Create token

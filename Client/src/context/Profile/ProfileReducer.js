@@ -5,14 +5,12 @@ export default (state, action) => {
       return {
         ...state,
         profile: action.payload,
-        loading: false,
       };
 
     case "GET_USER_DATA":
       return {
         ...state,
         userData: action.payload,
-        loading: false,
       };
 
     case "EDIT_PROFILE":

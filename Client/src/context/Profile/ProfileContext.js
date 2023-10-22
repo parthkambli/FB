@@ -7,8 +7,6 @@ const initialState = {
   profile: [],
   userData: [],
   error: null,
-  success: null,
-  loading: false,
 };
 
 // Create Context ------------------------------------------------------------------------
@@ -22,7 +20,6 @@ export const ProfileProvider = ({ children }) => {
 
   // Get logedIn User Profile ---------------------
   const getProfile = async () => {
-    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -88,13 +85,6 @@ export const ProfileProvider = ({ children }) => {
     }
   };
 
-  // Reset Success --------------------------------
-  async function resetSuccess() {
-    dispatch({
-      type: "RESET_SUCCESS",
-      payload: null,
-    });
-  }
 
   // Reset Error ----------------------------------
   async function resetError() {
@@ -109,13 +99,10 @@ export const ProfileProvider = ({ children }) => {
       value={{
         profile: state.profile,
         userData: state.userData,
-        success: state.success,
         error: state.error,
-        loading: state.loading,
         getProfile,
         getUserData,
         editProfile,
-        resetSuccess,
         resetError,
       }}
     >

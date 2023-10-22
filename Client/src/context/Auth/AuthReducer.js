@@ -13,12 +13,6 @@ export default (state, action) => {
         user: null,
       };
 
-    case "LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
-
     case "RESET_ERROR":
       return {
         ...state,
