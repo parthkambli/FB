@@ -21,12 +21,6 @@ export default (state, action) => {
         profile: action.payload,
       };
 
-    case "LOADING":
-      return {
-        ...state,
-        loading: action.payload,
-      };
-
     case "SUCCESS":
       return {
         ...state,

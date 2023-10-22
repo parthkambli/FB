@@ -7,7 +7,7 @@ const initialState = {
   recipes: [],
   recipe: [],
   error: null,
-  loading: true,
+  loading: false,
 };
 
 // Create Context ------------------------------------------------------------------------
@@ -21,6 +21,7 @@ export const RecipeProvider = ({ children }) => {
 
   // Get all Recipes ------------------------------
   const GetAllRecipes = async () => {
+    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -38,11 +39,14 @@ export const RecipeProvider = ({ children }) => {
         type: "ERROR",
         payload: error.response.data.error,
       });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
   // Get single Recipe ----------------------------
   const GetSingleRecipe = async (id) => {
+    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -60,6 +64,8 @@ export const RecipeProvider = ({ children }) => {
         type: "ERROR",
         payload: error.response.data.error,
       });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 

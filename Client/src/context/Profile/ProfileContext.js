@@ -8,7 +8,7 @@ const initialState = {
   userData: [],
   error: null,
   success: null,
-  loading: true,
+  loading: false,
 };
 
 // Create Context ------------------------------------------------------------------------
@@ -22,6 +22,7 @@ export const ProfileProvider = ({ children }) => {
 
   // Get logedIn User Profile ---------------------
   const getProfile = async () => {
+    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {

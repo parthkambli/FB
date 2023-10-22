@@ -142,6 +142,7 @@ const Profile = ({ params }) => {
   };
   return (
     <div className="container">
+    {}
       <div className="p-2 my-2" style={{ backgroundColor: "#F1F1F1" }}>
         {(profileError || recipeError) && showAlert && (
           <div className="alert alert-danger" role="alert">
