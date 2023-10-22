@@ -6,6 +6,7 @@ import api from "../api";
 const initialState = {
   profile: [],
   userData: [],
+  loading: false,
   error: null,
 };
 
@@ -20,6 +21,7 @@ export const ProfileProvider = ({ children }) => {
 
   // Get logedIn User Profile ---------------------
   const getProfile = async () => {
+    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -37,11 +39,14 @@ export const ProfileProvider = ({ children }) => {
         type: "ERROR",
         payload: error.response.data.error,
       });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
   // Get other user data --------------------------
   const getUserData = async (user_name) => {
+    dispatch({ type: "SET_LOADING", payload: true });
     const token = localStorage.getItem("user");
     const config = {
       headers: {
@@ -59,6 +64,8 @@ export const ProfileProvider = ({ children }) => {
         type: "ERROR",
         payload: error.response.data.error,
       });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
@@ -85,7 +92,6 @@ export const ProfileProvider = ({ children }) => {
     }
   };
 
-
   // Reset Error ----------------------------------
   async function resetError() {
     dispatch({
@@ -100,6 +106,7 @@ export const ProfileProvider = ({ children }) => {
         profile: state.profile,
         userData: state.userData,
         error: state.error,
+        loading: state.loading,
         getProfile,
         getUserData,
         editProfile,

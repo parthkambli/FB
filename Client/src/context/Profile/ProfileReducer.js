@@ -19,16 +19,10 @@ export default (state, action) => {
         profile: action.payload,
       };
 
-    case "SUCCESS":
+    case "SET_LOADING":
       return {
         ...state,
-        success: action.payload,
-      };
-
-    case "RESET_SUCCESS":
-      return {
-        ...state,
-        success: action.payload,
+        loading: action.payload,
       };
 
     case "RESET_ERROR":
