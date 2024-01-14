@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
         type: "LOGIN",
         payload: res.data.token,
       });
-      window.location.reload();
+      window.location.assign("/");
     } catch (error) {
       dispatch({
         type: "ERROR",
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
       dispatch({
         type: "LOGOUT",
       });
-      window.location.reload();
+      window.location.assign("/");
     } catch (error) {
       dispatch({
         type: "ERROR",

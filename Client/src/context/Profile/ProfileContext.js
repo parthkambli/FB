@@ -84,6 +84,7 @@ export const ProfileProvider = ({ children }) => {
         type: "EDIT_PROFILE",
         payload: res.data.data,
       });
+      window.location.reload();
     } catch (error) {
       dispatch({
         type: "ERROR",

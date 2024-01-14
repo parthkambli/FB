@@ -48,6 +48,7 @@ const Profile = ({ params }) => {
       getUserData(user_name).then(() => {});
     } else {
       getProfile().then(() => {});
+      console.log("Profile: ", profile);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -182,7 +183,7 @@ const Profile = ({ params }) => {
                         Recipes
                       </span>
                       <span className="pe-3">
-                        <strong>50</strong> saved
+                        <strong>0</strong> saved
                       </span>
                     </div>
                     <h5 style={{ color: "#FC7300" }}>
@@ -203,9 +204,10 @@ const Profile = ({ params }) => {
                       data-bs-toggle="modal"
                       data-bs-target="#editProfile"
                       onClick={() => {
-                        setName(profile.Full_Name);
-                        setUserName(profile.User_Name);
-                        setBio(profile.Bio);
+                        setName(profile.user.Full_Name);
+                        setUserName(profile.user.User_Name);
+                        setBio(profile.user.Bio);
+                        console.log("Name: ", name);
                       }}
                       style={{ backgroundColor: "#FC7300", color: "#F1F1F1" }}
                     >
@@ -254,7 +256,7 @@ const Profile = ({ params }) => {
                                         className="rounded-circle"
                                         src={
                                           profilePicture ||
-                                          profile.Profile_Picture ||
+                                          profile.user.Profile_Picture ||
                                           ProfilePicture
                                         }
                                         alt=""

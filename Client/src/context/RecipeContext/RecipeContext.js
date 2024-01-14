@@ -84,6 +84,7 @@ export const RecipeProvider = ({ children }) => {
         type: "ADD_RECIPE",
         payload: res.data.data,
       });
+      window.location.reload();
     } catch (error) {
       dispatch({
         type: "ERROR",
